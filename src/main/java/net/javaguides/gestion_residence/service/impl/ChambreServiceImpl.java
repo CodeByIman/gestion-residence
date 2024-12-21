@@ -49,7 +49,7 @@ public class ChambreServiceImpl implements ChambreService {
 //                        .orElseThrow(() -> new RuntimeException("Resident non trouvé")));
 //            }
 
-            chambre.setDisponible(true); // Par défaut, la chambre est disponible
+             // Par défaut, la chambre est disponible
             Chambre savedChambre = chambreRepository.save(chambre);
 
             return ChambreMapper.mapToChambreDTO(savedChambre);
@@ -90,6 +90,9 @@ public class ChambreServiceImpl implements ChambreService {
         // Update the properties of the existing chambre with new values
         chambre.setTaille(chambreDto.getTaille());
         chambre.setDisponible(chambreDto.isDisponible());
+        chambre.setEquipements(chambreDto.getEquipements());
+        chambre.setEquipements(chambreDto.getEquipements());
+
         // Set other properties as necessary, based on the chambreDto fields
 
         // Save the updated Chambre entity
