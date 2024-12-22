@@ -19,7 +19,7 @@ public class ChambreMapper {
                 chambre.getEquipements(),
                 chambre.isDisponible(),
                 chambre.getResidence() != null ? chambre.getResidence().getId() : null,
-                chambre.getResident() != null ? chambre.getResident().getIdResid() : null
+                chambre.getResident() != null ? chambre.getResident().getId() : null
 
         );
     }
