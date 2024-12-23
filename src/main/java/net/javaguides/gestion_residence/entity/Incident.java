@@ -29,6 +29,6 @@ public class Incident {
     private Technicien technicien;
 
     @ManyToOne
-    @JoinColumn(name = "residence_id")
-    private Residence residence;
+    @JoinColumn(name = "resident_id")
+    private Resident resident;
 }

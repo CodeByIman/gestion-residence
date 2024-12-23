@@ -20,7 +20,9 @@ public class Resident {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
     private String email;
+
 
     @OneToMany(mappedBy = "resident", cascade = CascadeType.ALL)
     private List<Chambre> chambres;
@@ -34,8 +36,8 @@ public class Resident {
         return id;
     }
 
-    public void setId(Long idResid) {
-        this.id = idResid;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     // Getter and Setter for nomResid
@@ -46,6 +48,11 @@ public class Resident {
     public void setName(String name) {
         this.name = name;
     }
+
+
+
+
+
 
     // Getter and Setter for ageResid
     public String getEmail() {

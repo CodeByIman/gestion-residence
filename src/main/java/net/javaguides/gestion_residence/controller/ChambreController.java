@@ -33,7 +33,7 @@ public class ChambreController {
 //        return chambreService.getAvailableChambres();
 //    }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<ChambreDto> createChambre(@RequestBody ChambreDto chambredto) {
 
         ChambreDto createdchambre= chambreService.saveChambre(chambredto);
