@@ -20,7 +20,7 @@ public class ResidentController {
     @Autowired
     private ResidentService residentService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<ResidentDto> createResident(@RequestBody ResidentDto residentDto) {
         ResidentDto createdResident = residentService.saveResident(residentDto);
         return new ResponseEntity<>(createdResident, HttpStatus.CREATED);
@@ -42,7 +42,7 @@ public class ResidentController {
         return new ResponseEntity<>(residents, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<ResidentDto> updateResident(
             @PathVariable Long id,
             @RequestBody ResidentDto residentDto
@@ -55,7 +55,7 @@ public class ResidentController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteResident(@PathVariable Long id) {
         try {
             residentService.deleteResident(id);
