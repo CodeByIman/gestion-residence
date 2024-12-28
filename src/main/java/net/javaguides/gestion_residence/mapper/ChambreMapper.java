@@ -13,18 +13,23 @@ public class ChambreMapper {
 
     // Mapper : Chambre -> ChambreDTO
     public static ChambreDto mapToChambreDTO(Chambre chambre) {
-        return new ChambreDto(
-                chambre.getId(),
-                chambre.getTaille(),
-                chambre.getEquipements(),
-                chambre.isDisponible(),
-                chambre.getResidence() != null ? chambre.getResidence().getId() : null,
-                chambre.getResident() != null ? chambre.getResident().getId() : null
+        ChambreDto chambreDto = new ChambreDto();
+        chambreDto.setId(chambre.getId());
+        chambreDto.setTaille(chambre.getTaille());
+        chambreDto.setEquipements(chambre.getEquipements());
 
-        );
+        // Map Chambre.Status to ChambreDto.Status if not null
+        if (chambre.getStatus() != null) {
+            chambreDto.setStatus(ChambreDto.Status.valueOf(chambre.getStatus().name()));
+        }
+        return chambreDto;
     }
 
-//    // Mapper : ChambreDTO -> Chambre
+
+
+
+
+    //    // Mapper : ChambreDTO -> Chambre
 //    public static Chambre mapToChambre(ChambreDto chambreDto) {
 //        Chambre chambre = new Chambre();
 //        chambre.setId(chambreDto.getId());
@@ -39,12 +44,22 @@ public class ChambreMapper {
 //
 //        return chambre;
 //    }
-public static Chambre mapToChambre(ChambreDto chambreDto) {
-    Chambre chambre = new Chambre();
-    chambre.setId(chambreDto.getId());
-    chambre.setTaille(chambreDto.getTaille());
-    chambre.setEquipements(chambreDto.getEquipements());
-    chambre.setDisponible(chambreDto.isDisponible());
+    public static Chambre mapToChambre(ChambreDto chambreDto) {
+        Chambre chambre = new Chambre();
+        chambre.setId(chambreDto.getId());
+        chambre.setTaille(chambreDto.getTaille());
+        chambre.setEquipements(chambreDto.getEquipements());
+
+        // Gérer le statut avec une valeur par défaut
+        if (chambreDto.getStatus() != null) {
+            chambre.setStatus(Chambre.Status.valueOf(chambreDto.getStatus().name()));
+        } else {
+            chambre.setStatus(Chambre.Status.DISPONIBLE); // Définir DISPONIBLE par défaut
+        }
+
+        return chambre;
+    }
+
 
     //remove commentaire au dessous si tua besoin dettribuer a la chambre une residenc eet un chambre apresavoire verifier quil exist deja un resident qi a ce id pour ne pas avoire exeption
 
@@ -62,8 +77,7 @@ public static Chambre mapToChambre(ChambreDto chambreDto) {
 //        chambre.setResident(resident); // Associer le résident à la chambre
 //    }
 
-    return chambre;
-}
+
 
     public static List<ChambreDto> mapToChambreDTOList(List<Chambre> chambres) {
         return chambres.stream()

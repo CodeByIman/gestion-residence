@@ -33,27 +33,47 @@ public class ChambreServiceImpl implements ChambreService {
 
 
         //crer chambre
-        @Override
-        public ChambreDto saveChambre(ChambreDto chambreDto) {
-            Chambre chambre = ChambreMapper.mapToChambre(chambreDto);
-
-            // Associer Residence si l'ID existe
-//            if (chambreDto.getResidenceId() != null) {
-//                chambre.setResidence(residenceRepository.findById(chambreDto.getResidenceId())
-//                        .orElseThrow(() -> new RuntimeException("Residence non trouvée")));
-//            }
+//        @Override
+//        public ChambreDto saveChambre(ChambreDto chambreDto) {
+//            Chambre chambre = ChambreMapper.mapToChambre(chambreDto);
 //
-//            // Associer Resident si l'ID existe
-//            if (chambreDto.getResidentId() != null) {
-//                chambre.setResident(residentRepository.findById(chambreDto.getResidentId())
-//                        .orElseThrow(() -> new RuntimeException("Resident non trouvé")));
-//            }
+//            // Associer Residence si l'ID existe
+////            if (chambreDto.getResidenceId() != null) {
+////                chambre.setResidence(residenceRepository.findById(chambreDto.getResidenceId())
+////                        .orElseThrow(() -> new RuntimeException("Residence non trouvée")));
+////            }
+////
+////            // Associer Resident si l'ID existe
+////            if (chambreDto.getResidentId() != null) {
+////                chambre.setResident(residentRepository.findById(chambreDto.getResidentId())
+////                        .orElseThrow(() -> new RuntimeException("Resident non trouvé")));
+////            }
+//
+//             // Par défaut, la chambre est disponible
+//            Chambre savedChambre = chambreRepository.save(chambre);
+//
+//
+//
+//            return ChambreMapper.mapToChambreDTO(savedChambre);
+//        }
 
-             // Par défaut, la chambre est disponible
-            Chambre savedChambre = chambreRepository.save(chambre);
+@Override
+public ChambreDto saveChambre(ChambreDto chambreDto) {
+    Chambre chambre = ChambreMapper.mapToChambre(chambreDto);
 
-            return ChambreMapper.mapToChambreDTO(savedChambre);
-        }
+    // Gérer le statut par défaut
+    if (chambreDto.getStatus() != null) {
+        chambre.setStatus(Chambre.Status.valueOf(chambreDto.getStatus().name()));
+    } else {
+        chambre.setStatus(Chambre.Status.DISPONIBLE); // Définir DISPONIBLE comme statut par défaut
+    }
+
+    // Sauvegarder la chambre
+    Chambre savedChambre = chambreRepository.save(chambre);
+
+    return ChambreMapper.mapToChambreDTO(savedChambre);
+}
+
 
 
 
@@ -77,7 +97,7 @@ public class ChambreServiceImpl implements ChambreService {
     // Get all available Chambres
     @Override
     public List<ChambreDto> getAvailableChambres() {
-        List<Chambre> chambres = chambreRepository.findByDisponibleTrue();
+        List<Chambre> chambres = chambreRepository.findByStatus(Chambre.Status.DISPONIBLE);
         return ChambreMapper.mapToChambreDTOList(chambres);  // Assuming you have a method to convert list to DTO
     }
 
@@ -89,7 +109,13 @@ public class ChambreServiceImpl implements ChambreService {
 
         // Update the properties of the existing chambre with new values
         chambre.setTaille(chambreDto.getTaille());
-        chambre.setDisponible(chambreDto.isDisponible());
+
+        if (chambreDto.getStatus() != null) {
+            chambre.setStatus(Chambre.Status.valueOf(chambreDto.getStatus().name()));
+        }
+
+
+
         chambre.setEquipements(chambreDto.getEquipements());
         chambre.setEquipements(chambreDto.getEquipements());
 

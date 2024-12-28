@@ -3,6 +3,9 @@ package net.javaguides.gestion_residence.entity;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import net.javaguides.gestion_residence.dto.ChambreDto;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @Entity
 @Table
@@ -13,11 +16,20 @@ public class Chambre {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     private String taille;
 
     private String equipements;
 
-    private boolean disponible;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "Status", nullable = false)
+    private Status status;
+
+    public enum Status {
+        DISPONIBLE,
+        OCCUPEE,
+        MAINTENANCE
+    }
 
     @ManyToOne
     @JoinColumn
@@ -40,8 +52,13 @@ public class Chambre {
         return equipements;
     }
 
-    public boolean isDisponible() {
-        return disponible;
+    // Getter et Setter pour status
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public Residence getResidence() {
@@ -65,9 +82,7 @@ public class Chambre {
         this.equipements = equipements;
     }
 
-    public void setDisponible(boolean disponible) {
-        this.disponible = disponible;
-    }
+
 
     public void setResidence(Residence residence) {
         this.residence = residence;

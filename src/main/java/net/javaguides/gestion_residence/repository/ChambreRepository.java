@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ChambreRepository extends JpaRepository<Chambre, Long> {
 
-    List<Chambre> findByDisponibleTrue(); // Récupérer les chambres disponibles
+    List<Chambre> findByStatus(Chambre.Status status); // Récupérer les chambres disponibles
 }

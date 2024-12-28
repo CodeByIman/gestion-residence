@@ -1,11 +1,21 @@
 package net.javaguides.gestion_residence.dto;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 
 public class ChambreDto {
 
     private Long id;
     private String taille;
     private String equipements;
-    private boolean disponible;
+    @Enumerated(EnumType.ORDINAL)
+    private Status status;
+
+    public enum Status {
+        DISPONIBLE,
+        OCCUPEE,
+        MAINTENANCE
+    }
     private Long residenceId; // Identifiant de la résidence
     private Long residentId;
 
@@ -14,11 +24,11 @@ public class ChambreDto {
     }
 
     // Constructeur avec arguments
-    public ChambreDto(Long id, String taille, String equipements, boolean disponible, Long residenceId, Long residentId) {
+    public ChambreDto(Long id, String taille, String equipements, Status status, Long residenceId, Long residentId) {
         this.id = id;
         this.taille = taille;
         this.equipements = equipements;
-        this.disponible = disponible;
+        this.status = status;
         this.residenceId = residenceId;
         this.residentId = residentId;
     }
@@ -50,13 +60,13 @@ public class ChambreDto {
         this.equipements = equipements;
     }
 
-    // Getter et Setter pour disponible
-    public boolean isDisponible() {
-        return disponible;
+    // Getter et Setter pour status
+    public Status getStatus() {
+        return status;
     }
 
-    public void setDisponible(boolean disponible) {
-        this.disponible = disponible;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     // Getter et Setter pour residenceId
