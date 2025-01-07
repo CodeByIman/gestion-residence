@@ -109,5 +109,19 @@ public class ResidentServiceImpl implements ResidentService {
                 .map(ResidentMapper::mapToDto)
                 .collect(Collectors.toList());
     }
+    @Override
+    // Logic to find residents with chambreId == 0
+    public List<Resident> findResidentsWithoutChambre() {
+        return residentRepository.findByChambreId(0L);
+    }
+    @Override
+    public boolean authenticateResident(String email, String password) {
+        Resident resident = residentRepository.findByEmail(email);
+        if (resident != null && resident.getPassword().equals(password)) {
+            return true;
+        }
+        return false;
+    }
+
 
 }

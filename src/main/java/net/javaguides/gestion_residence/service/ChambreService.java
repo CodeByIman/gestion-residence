@@ -13,6 +13,7 @@ public interface ChambreService {
     List<ChambreDto> getAllChambres();
     ChambreDto updateChambre(Long id, ChambreDto chambreDto);
     void deleteChambre(Long id);
+    void assignResidentToChambre(long chambreId, long residentId);
 
 //    Chambre libererChambre(Long chambreId);
 }

@@ -20,6 +20,7 @@ public class ResidentMapper {
         residentDto.setName(resident.getName());
         residentDto.setEmail(resident.getEmail());
         residentDto.setChambreId(resident.getChambreId());
+        residentDto.setPassword(resident.getPassword());
 
 //        residentDto.setPaiementId(resident.getPaiements().getId()); ((obtient list des id de tout les paiment je pense que ca na sert a rien // Optional: if relevant
 
@@ -40,6 +41,7 @@ public class ResidentMapper {
         resident.setName(residentDto.getName());
         resident.setEmail(residentDto.getEmail());
         resident.setChambreId(residentDto.getChambreId());
+        resident.setPassword(residentDto.getPassword());
 
         // `incidentId` or other fields can be handled here if needed
         return resident;

@@ -1,5 +1,6 @@
 package net.javaguides.gestion_residence.controller;
 
+import net.javaguides.gestion_residence.dto.LoginRequest;
 import net.javaguides.gestion_residence.dto.ResidentDto;
 import net.javaguides.gestion_residence.entity.Resident;
 import net.javaguides.gestion_residence.mapper.ResidentMapper;
@@ -76,6 +77,21 @@ public ResponseEntity<List<ResidentDto>> getResidentsByChambreId(@PathVariable L
     }
 }
 
+
+
+    @GetMapping("/without-chambre")
+    public List<Resident> getResidentsWithoutChambre() {
+        return residentService.findResidentsWithoutChambre();
+    }
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+        boolean isAuthenticated = residentService.authenticateResident(loginRequest.getEmail(), loginRequest.getPassword());
+        if (isAuthenticated) {
+            return ResponseEntity.ok("Login successful");
+        } else {
+            return ResponseEntity.status(401).body("Invalid credentials");
+        }
+    }
 
 }
 

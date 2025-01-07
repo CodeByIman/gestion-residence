@@ -12,6 +12,7 @@ import net.javaguides.gestion_residence.repository.ResidentRepository;
 import net.javaguides.gestion_residence.service.ChambreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -101,6 +102,21 @@ public class ChambreServiceImpl implements ChambreService {
                     .orElseThrow(() -> new RessourceNotFoundException("Chambre non trouvée avec l'ID : " + id));
             chambreRepository.delete(chambre);
         }
+
+    @Override
+    @Transactional
+    public void assignResidentToChambre(long chambreId, long residentId) {
+        Chambre chambre = chambreRepository.findById(chambreId)
+                .orElseThrow(() -> new IllegalArgumentException("Chambre not found with ID: " + chambreId));
+        Resident resident = residentRepository.findById(residentId)
+                .orElseThrow(() -> new IllegalArgumentException("Resident not found with ID: " + residentId));
+        resident.setChambreId(chambreId);  // Assign the chambreId to the resident
+
+        chambre.setResident(resident);
+        // Sauvegarder les entités mises à jour
+        residentRepository.save(resident);  // Sauvegarde du résident
+        chambreRepository.save(chambre);    // Sauvegarde de la chambre (si nécessaire)// Save the updated resident
+    }
 
 //    @Override
 //    public Chambre libererChambre(Long chambreId) {

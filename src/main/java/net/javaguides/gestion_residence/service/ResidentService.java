@@ -1,6 +1,7 @@
 package net.javaguides.gestion_residence.service;
 
 import net.javaguides.gestion_residence.dto.ResidentDto;
+import net.javaguides.gestion_residence.entity.Resident;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface ResidentService {
 
 
     List<ResidentDto> getResidentsByChambreId(Long chambreId);
+    List<Resident> findResidentsWithoutChambre();
+    boolean authenticateResident(String email, String password);
 }

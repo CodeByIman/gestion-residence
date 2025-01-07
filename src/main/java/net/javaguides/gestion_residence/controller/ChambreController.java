@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 
 import java.util.List;
+import java.util.Map;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/chambres")
@@ -85,5 +87,15 @@ public class ChambreController {
         } catch (RuntimeException e) {
             return new ResponseEntity<>("Chambre non trouvée", HttpStatus.NOT_FOUND);  // Status 404 - Not Found
         }
+    }
+
+
+
+    @PutMapping("/assign/{chambreId}")
+
+    public ResponseEntity<String> assignResidentToChambre(@PathVariable long chambreId, @RequestBody Map<String, Long> request) {
+        Long residentId = request.get("residentId");
+        chambreService.assignResidentToChambre(chambreId, residentId);  // Appel du service avec les IDs
+        return ResponseEntity.ok("Resident assigned successfully.");
     }
 }

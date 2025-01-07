@@ -7,6 +7,7 @@ public class ResidentDto {
     private Long incidentId; // Identifiant de la résidence
     private Long paiementId;
     private long ChambreId;
+    private String password;
 
     // Getters and Setters
     public Long getId() { return id; }
@@ -41,5 +42,12 @@ public class ResidentDto {
 
     public void setChambreId(long chambreId) {
         ChambreId = chambreId;
+    }
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

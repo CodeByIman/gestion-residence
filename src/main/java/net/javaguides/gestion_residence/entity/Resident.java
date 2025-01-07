@@ -37,6 +37,15 @@ public class Resident {
     @OneToMany(mappedBy = "resident", cascade = CascadeType.ALL)
     private List<Paiement> paiements;
 
+
+    private String password;
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
     // Getter and Setter for id
     public Long getId() {
         return id;
