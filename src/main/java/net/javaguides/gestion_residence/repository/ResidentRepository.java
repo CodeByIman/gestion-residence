@@ -6,5 +6,7 @@ import net.javaguides.gestion_residence.entity.Resident;
 import java.util.List;
 
 public interface ResidentRepository extends JpaRepository<Resident, Long> {
-    // Récupérer les résidents par chambre
+
+    // Méthode pour trouver tous les résidents par l'ID de la chambre
+    List<Resident> findByChambreId(Long id);
 }

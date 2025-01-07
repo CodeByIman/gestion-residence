@@ -31,12 +31,11 @@ public class Chambre {
         MAINTENANCE
     }
 
-    @ManyToOne
-    @JoinColumn
-    private Residence residence;
+
+
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "resident_id", referencedColumnName = "id")
     private Resident resident;
 
     // Getters manuels
@@ -61,9 +60,7 @@ public class Chambre {
         this.status = status;
     }
 
-    public Residence getResidence() {
-        return residence;
-    }
+
 
     public Resident getResident() {
         return resident;
@@ -84,9 +81,7 @@ public class Chambre {
 
 
 
-    public void setResidence(Residence residence) {
-        this.residence = residence;
-    }
+
 
     public void setResident(Resident resident) {
         this.resident = resident;

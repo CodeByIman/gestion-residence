@@ -1,35 +1,35 @@
 package net.javaguides.gestion_residence.dto;
+import net.javaguides.gestion_residence.entity.Resident;
+
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-
 
 public class ChambreDto {
 
     private Long id;
     private String taille;
     private String equipements;
-    @Enumerated(EnumType.ORDINAL)
     private Status status;
+
+    // Contient uniquement l'ID du résident
+    private Long residentId;
 
     public enum Status {
         DISPONIBLE,
         OCCUPEE,
         MAINTENANCE
     }
-    private Long residenceId; // Identifiant de la résidence
-    private Long residentId;
 
     // Constructeur sans argument
     public ChambreDto() {
     }
 
     // Constructeur avec arguments
-    public ChambreDto(Long id, String taille, String equipements, Status status, Long residenceId, Long residentId) {
+    public ChambreDto(Long id, String taille, String equipements, Status status, Long residentId) {
         this.id = id;
         this.taille = taille;
         this.equipements = equipements;
         this.status = status;
-        this.residenceId = residenceId;
         this.residentId = residentId;
     }
 
@@ -67,15 +67,6 @@ public class ChambreDto {
 
     public void setStatus(Status status) {
         this.status = status;
-    }
-
-    // Getter et Setter pour residenceId
-    public Long getResidenceId() {
-        return residenceId;
-    }
-
-    public void setResidenceId(Long residenceId) {
-        this.residenceId = residenceId;
     }
 
     // Getter et Setter pour residentId

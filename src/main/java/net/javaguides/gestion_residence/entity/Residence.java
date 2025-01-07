@@ -15,8 +15,7 @@ public class Residence {
     private int capaciteHebergement;
     private int chambreDisponible;
 
-    @OneToMany(mappedBy = "residence", cascade = CascadeType.ALL)
-    private List<Chambre> chambres;
+
 
     // Constructor without arguments
     public Residence() {
@@ -30,7 +29,7 @@ public class Residence {
         this.incidentEnCours = incidentEnCours;
         this.capaciteHebergement = capaciteHebergement;
         this.chambreDisponible = chambreDisponible;
-        this.chambres = chambres;
+
     }
 
     // Getters
@@ -58,9 +57,7 @@ public class Residence {
         return chambreDisponible;
     }
 
-    public List<Chambre> getChambres() {
-        return chambres;
-    }
+
 
     // Setters
     public void setId(Long id) {
@@ -87,7 +84,4 @@ public class Residence {
         this.chambreDisponible = chambreDisponible;
     }
 
-    public void setChambres(List<Chambre> chambres) {
-        this.chambres = chambres;
-    }
 }

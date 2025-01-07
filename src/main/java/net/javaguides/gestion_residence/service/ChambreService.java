@@ -1,5 +1,6 @@
 package net.javaguides.gestion_residence.service;
 import net.javaguides.gestion_residence.dto.ChambreDto;
+import net.javaguides.gestion_residence.entity.Chambre;
 
 import java.util.List;
 
@@ -13,4 +14,5 @@ public interface ChambreService {
     ChambreDto updateChambre(Long id, ChambreDto chambreDto);
     void deleteChambre(Long id);
 
+//    Chambre libererChambre(Long chambreId);
 }

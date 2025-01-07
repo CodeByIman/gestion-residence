@@ -15,23 +15,29 @@ import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
+
+
+
+
+
 public class Resident {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
+    // Remplacement de la liste de chambres par un seul identifiant de chambre
+    private Long chambreId;
 
     private String email;
 
-
-    @OneToMany(mappedBy = "resident", cascade = CascadeType.ALL)
-    private List<Chambre> chambres;
-
+    // Paiements restent inchangés
     @OneToMany(mappedBy = "resident", cascade = CascadeType.ALL)
     private List<Paiement> paiements;
 
-
-    // Getter and Setter for idResid
+    // Getter and Setter for id
     public Long getId() {
         return id;
     }
@@ -40,7 +46,7 @@ public class Resident {
         this.id = id;
     }
 
-    // Getter and Setter for nomResid
+    // Getter and Setter for name
     public String getName() {
         return name;
     }
@@ -49,12 +55,7 @@ public class Resident {
         this.name = name;
     }
 
-
-
-
-
-
-    // Getter and Setter for ageResid
+    // Getter and Setter for email
     public String getEmail() {
         return email;
     }
@@ -63,13 +64,13 @@ public class Resident {
         this.email = email;
     }
 
-    // Getter and Setter for chambres
-    public List<Chambre> getChambres() {
-        return chambres;
+    // Getter and Setter for chambreId (remplaçant la relation @OneToMany)
+    public Long getChambreId() {
+        return chambreId;
     }
 
-    public void setChambres(List<Chambre> chambres) {
-        this.chambres = chambres;
+    public void setChambreId(Long chambreId) {
+        this.chambreId = chambreId;
     }
 
     // Getter and Setter for paiements
@@ -80,7 +81,4 @@ public class Resident {
     public void setPaiements(List<Paiement> paiements) {
         this.paiements = paiements;
     }
-
-
 }
-

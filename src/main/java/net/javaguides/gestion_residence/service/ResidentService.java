@@ -17,5 +17,5 @@ public interface ResidentService {
     void deleteResident(Long id);
 
 
-
+    List<ResidentDto> getResidentsByChambreId(Long chambreId);
 }

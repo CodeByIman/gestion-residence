@@ -3,6 +3,7 @@ package net.javaguides.gestion_residence.service.impl;
 import lombok.AllArgsConstructor;
 import net.javaguides.gestion_residence.dto.ChambreDto;
 import net.javaguides.gestion_residence.entity.Chambre;
+import net.javaguides.gestion_residence.entity.Resident;
 import net.javaguides.gestion_residence.exception.RessourceNotFoundException;
 import net.javaguides.gestion_residence.mapper.ChambreMapper;
 import net.javaguides.gestion_residence.repository.ChambreRepository;
@@ -13,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 @AllArgsConstructor
@@ -32,127 +31,91 @@ public class ChambreServiceImpl implements ChambreService {
         private ChambreRepository chambreRepository;
 
 
-        //crer chambre
-//        @Override
-//        public ChambreDto saveChambre(ChambreDto chambreDto) {
-//            Chambre chambre = ChambreMapper.mapToChambre(chambreDto);
-//
-//            // Associer Residence si l'ID existe
-////            if (chambreDto.getResidenceId() != null) {
-////                chambre.setResidence(residenceRepository.findById(chambreDto.getResidenceId())
-////                        .orElseThrow(() -> new RuntimeException("Residence non trouvée")));
-////            }
-////
-////            // Associer Resident si l'ID existe
-////            if (chambreDto.getResidentId() != null) {
-////                chambre.setResident(residentRepository.findById(chambreDto.getResidentId())
-////                        .orElseThrow(() -> new RuntimeException("Resident non trouvé")));
-////            }
-//
-//             // Par défaut, la chambre est disponible
-//            Chambre savedChambre = chambreRepository.save(chambre);
-//
-//
-//
-//            return ChambreMapper.mapToChambreDTO(savedChambre);
-//        }
-
-@Override
-public ChambreDto saveChambre(ChambreDto chambreDto) {
-    Chambre chambre = ChambreMapper.mapToChambre(chambreDto);
-
-    // Gérer le statut par défaut
-    if (chambreDto.getStatus() != null) {
-        chambre.setStatus(Chambre.Status.valueOf(chambreDto.getStatus().name()));
-    } else {
-        chambre.setStatus(Chambre.Status.DISPONIBLE); // Définir DISPONIBLE comme statut par défaut
-    }
-
-    // Sauvegarder la chambre
-    Chambre savedChambre = chambreRepository.save(chambre);
-
-    return ChambreMapper.mapToChambreDTO(savedChambre);
-}
 
 
+        @Override
+        public ChambreDto saveChambre(ChambreDto chambreDto) {
+            Resident resident = null;
+            if (chambreDto.getResidentId() != null) {
+                resident = residentRepository.findById(chambreDto.getResidentId())
+                        .orElseThrow(() -> new RuntimeException("Resident non trouvé"));
+            }
+            Chambre chambre = ChambreMapper.mapToChambre(chambreDto, resident);  // Pass resident here
+            Chambre savedChambre = chambreRepository.save(chambre);
+            // Assignez l'ID de la chambre au resident et enregistrez la mise à jour
+            if (resident != null) {
+                resident.setChambreId(savedChambre.getId());
+                residentRepository.save(resident);  // Sauvegardez les changements pour le résident
+            }
 
-
-
-
-
-    // Get Chambre by ID
-    @Override
-    public ChambreDto getChambre(Long id) {
-        Chambre chambre = chambreRepository.findById(id)
-                .orElseThrow(() -> new RessourceNotFoundException("Chambre non trouvée avec l'ID : " + id));
-
-        return ChambreMapper.mapToChambreDTO(chambre);
-    }
-    // Get all Chambres
-    @Override
-    public List<ChambreDto> getAllChambres() {
-        List<Chambre> chambres = chambreRepository.findAll();
-        return ChambreMapper.mapToChambreDTOList(chambres);  // Assuming you have a method to convert list to DTO
-    }
-    // Get all available Chambres
-    @Override
-    public List<ChambreDto> getAvailableChambres() {
-        List<Chambre> chambres = chambreRepository.findByStatus(Chambre.Status.DISPONIBLE);
-        return ChambreMapper.mapToChambreDTOList(chambres);  // Assuming you have a method to convert list to DTO
-    }
-
-    @Override
-    public ChambreDto updateChambre(Long id, ChambreDto chambreDto) {
-        // Fetch the existing Chambre from the database by ID
-        Chambre chambre = chambreRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Chambre non trouvée avec l'ID : " + id));
-
-        // Update the properties of the existing chambre with new values
-        chambre.setTaille(chambreDto.getTaille());
-
-        if (chambreDto.getStatus() != null) {
-            chambre.setStatus(Chambre.Status.valueOf(chambreDto.getStatus().name()));
+            return ChambreMapper.mapToChambreDTO(savedChambre);
         }
 
 
+        @Override
+        public ChambreDto getChambre(Long id) {
+            Chambre chambre = chambreRepository.findById(id)
+                    .orElseThrow(() -> new RessourceNotFoundException("Chambre non trouvée avec l'ID : " + id));
+            return ChambreMapper.mapToChambreDTO(chambre);
+        }
 
-        chambre.setEquipements(chambreDto.getEquipements());
-        chambre.setEquipements(chambreDto.getEquipements());
+        @Override
+        public List<ChambreDto> getAllChambres() {
+            List<Chambre> chambres = chambreRepository.findAll();
+            return ChambreMapper.mapToChambreDTOList(chambres);
+        }
 
-        // Set other properties as necessary, based on the chambreDto fields
+        @Override
+        public List<ChambreDto> getAvailableChambres() {
+            List<Chambre> chambres = chambreRepository.findByStatus(Chambre.Status.DISPONIBLE);
+            return ChambreMapper.mapToChambreDTOList(chambres);
+        }
 
-        // Save the updated Chambre entity
-        Chambre updatedChambre = chambreRepository.save(chambre);
+        @Override
+        public ChambreDto updateChambre(Long id, ChambreDto chambreDto) {
+            Chambre chambre = chambreRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Chambre non trouvée avec l'ID : " + id));
 
-        // Return the updated chambre as a DTO
-        return ChambreMapper.mapToChambreDTO(updatedChambre);
+            chambre.setTaille(chambreDto.getTaille());
+            chambre.setEquipements(chambreDto.getEquipements());
+
+            if (chambreDto.getStatus() != null) {
+                chambre.setStatus(Chambre.Status.valueOf(chambreDto.getStatus().name()));
+            }
+
+            if (chambreDto.getResidentId() != null) {
+                Resident resident = residentRepository.findById(chambreDto.getResidentId())
+                        .orElseThrow(() -> new RuntimeException("Resident non trouvé"));
+                chambre.setResident(resident);
+            } else {
+                chambre.setResident(null);
+            }
+
+            Chambre updatedChambre = chambreRepository.save(chambre);
+            return ChambreMapper.mapToChambreDTO(updatedChambre);
+        }
+
+        @Override
+        public void deleteChambre(Long id) {
+            Chambre chambre = chambreRepository.findById(id)
+                    .orElseThrow(() -> new RessourceNotFoundException("Chambre non trouvée avec l'ID : " + id));
+            chambreRepository.delete(chambre);
+        }
+
+//    @Override
+//    public Chambre libererChambre(Long chambreId) {
+//        Chambre chambre = chambreRepository.findById(chambreId)
+//                .orElseThrow(() -> new RessourceNotFoundException("Chambre non trouvée avec id : " + chambreId));
+//
+//        if (chambre.getResident() != null) {
+//            Resident resident = chambre.getResident();
+//            resident.setChambreId(null);  // Détacher la chambre du résident
+//            chambre.setResident(null);  // Supprimer le résident de la chambre
+//            chambre.setStatus(Chambre.Status.DISPONIBLE);  // Mettre le statut à disponible
+//
+//            residentRepository.save(resident);  // Sauvegarder les changements
+//            chambreRepository.save(chambre);    // Sauvegarder les changements
+//        }
+//        return chambre;
+//    }
     }
-    @Override
-    public void deleteChambre(Long id) {
-        // Check if the Chambre exists before deleting
-        Chambre chambre = chambreRepository.findById(id)
-                .orElseThrow(() -> new RessourceNotFoundException("Chambre non trouvée avec l'ID : " + id));
-
-        // Delete the Chambre from the repository
-        chambreRepository.delete(chambre);
-    }
-
-
-
-
-//        public List<Chambre> getAllChambres() {
-//            return chambreRepository.findAll();
-//        }
-//
-//        public List<Chambre> getAvailableChambres() {
-//            return chambreRepository.findByDisponibleTrue();
-//
-//        }
-//
-//
-//
-//        public void deleteChambre(Long id) {
-//            chambreRepository.deleteById(id);
-//        }
-
-}

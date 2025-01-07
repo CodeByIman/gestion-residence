@@ -6,6 +6,7 @@ public class ResidentDto {
     private String email;
     private Long incidentId; // Identifiant de la résidence
     private Long paiementId;
+    private long ChambreId;
 
     // Getters and Setters
     public Long getId() { return id; }
@@ -16,6 +17,7 @@ public class ResidentDto {
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+
 
     public Long getIncidentId() {
         return incidentId;
@@ -33,4 +35,11 @@ public class ResidentDto {
     }
 
 
+    public long getChambreId() {
+        return ChambreId;
+    }
+
+    public void setChambreId(long chambreId) {
+        ChambreId = chambreId;
+    }
 }

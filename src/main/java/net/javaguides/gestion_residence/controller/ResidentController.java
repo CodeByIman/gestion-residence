@@ -64,5 +64,18 @@ public class ResidentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+//     Nouvelle méthode pour récupérer les résidents par ID de chambre
+@GetMapping("/chambre/{chambreId}")
+public ResponseEntity<List<ResidentDto>> getResidentsByChambreId(@PathVariable Long chambreId) {
+    try {
+        List<ResidentDto> residents = residentService.getResidentsByChambreId(chambreId); // Nécessite l'ajout dans le service.
+        return new ResponseEntity<>(residents, HttpStatus.OK);
+    } catch (RuntimeException e) {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+}
+
+
 }
 

@@ -102,4 +102,12 @@ public class ResidentServiceImpl implements ResidentService {
         }
         residentRepository.deleteById(id);
     }
+    @Override
+    public List<ResidentDto> getResidentsByChambreId(Long id) {
+        List<Resident> residents = residentRepository.findByChambreId(id);  // Assurez-vous d’avoir une requête dans le repository.
+        return residents.stream()
+                .map(ResidentMapper::mapToDto)
+                .collect(Collectors.toList());
+    }
+
 }
