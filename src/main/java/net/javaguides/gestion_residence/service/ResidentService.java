@@ -20,5 +20,5 @@ public interface ResidentService {
 
     List<ResidentDto> getResidentsByChambreId(Long chambreId);
     List<Resident> findResidentsWithoutChambre();
-    boolean authenticateResident(String email, String password);
+    ResidentDto authenticateResident(String email, String password);
 }

@@ -84,14 +84,15 @@ public ResponseEntity<List<ResidentDto>> getResidentsByChambreId(@PathVariable L
         return residentService.findResidentsWithoutChambre();
     }
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        boolean isAuthenticated = residentService.authenticateResident(loginRequest.getEmail(), loginRequest.getPassword());
-        if (isAuthenticated) {
-            return ResponseEntity.ok("Login successful");
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        ResidentDto residentDto = residentService.authenticateResident(loginRequest.getEmail(), loginRequest.getPassword());
+        if (residentDto != null) {
+            return ResponseEntity.ok(residentDto);
         } else {
             return ResponseEntity.status(401).body("Invalid credentials");
         }
     }
+
 
 }
 

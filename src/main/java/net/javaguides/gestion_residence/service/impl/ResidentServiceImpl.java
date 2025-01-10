@@ -115,13 +115,14 @@ public class ResidentServiceImpl implements ResidentService {
         return residentRepository.findByChambreId(0L);
     }
     @Override
-    public boolean authenticateResident(String email, String password) {
+    public ResidentDto authenticateResident(String email, String password) {
         Resident resident = residentRepository.findByEmail(email);
         if (resident != null && resident.getPassword().equals(password)) {
-            return true;
+            return ResidentMapper.mapToDto(resident); // Assurez-vous d'avoir un mapper pour convertir l'entité en DTO
         }
-        return false;
+        return null;
     }
+
 
 
 }
