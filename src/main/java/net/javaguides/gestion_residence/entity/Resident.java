@@ -1,6 +1,7 @@
 
 package net.javaguides.gestion_residence.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,6 +36,7 @@ public class Resident {
 
     // Paiements restent inchangés
     @OneToMany(mappedBy = "resident", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Paiement> paiements;
 
 
