@@ -1,32 +1,23 @@
 package net.javaguides.gestion_residence.service;
 
+import net.javaguides.gestion_residence.dto.AdminDto;
 import net.javaguides.gestion_residence.entity.Admin;
-import net.javaguides.gestion_residence.repository.AdminRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
 
-@Service
-public class AdminService {
+public interface AdminService {
+    AdminDto authenticateAdmin(String email, String password);
 
-    @Autowired
-    private AdminRepository adminRepository;
+    Admin addAdmin(Long id, String password,String email);
 
-    public List<Admin> getAllAdmins() {
-        return adminRepository.findAll();
-    }
 
-    public Optional<Admin> getAdminById(Long id) {
-        return adminRepository.findById(id);
-    }
+//     List<Admin> getAllAdmins();
+//
+//     Optional<Admin> getAdminById(Long id);
+//
+//     Admin saveAdmin(Admin admin) ;
+//
+//     void deleteAdmin(Long id);
 
-    public Admin saveAdmin(Admin admin) {
-        return adminRepository.save(admin);
-    }
-
-    public void deleteAdmin(Long id) {
-        adminRepository.deleteById(id);
-    }
+    
 }

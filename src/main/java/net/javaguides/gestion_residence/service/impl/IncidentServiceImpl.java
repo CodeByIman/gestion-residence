@@ -66,4 +66,13 @@ public class IncidentServiceImpl implements IncidentService{
                 .map(IncidentMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+
+    public List<IncidentDto> getIncidentsByTechnicienId(Long technicienId) {
+        List<Incident> incidents = incidentRepository.findByTechnicien_Id(technicienId);
+        return incidents.stream()
+                .map(IncidentMapper::toDto)
+                .collect(Collectors.toList());
+    }
 }

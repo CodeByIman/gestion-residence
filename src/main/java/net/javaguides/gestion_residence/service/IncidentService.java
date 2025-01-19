@@ -10,4 +10,6 @@ public interface IncidentService {
     IncidentDto assignIncidentToTechnicien(Long incidentId, Long technicienId);
 
     List<IncidentDto> getAllIncidents();
+//
+    List<IncidentDto> getIncidentsByTechnicienId(Long technicienId);
 }

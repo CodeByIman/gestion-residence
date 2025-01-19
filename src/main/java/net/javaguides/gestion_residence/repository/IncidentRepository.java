@@ -10,4 +10,5 @@ public interface IncidentRepository extends JpaRepository<Incident, Long> {
 
     List<Incident> findAll();
 
+    List<Incident> findByTechnicien_Id(Long technicienId);
 }

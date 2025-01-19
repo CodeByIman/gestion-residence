@@ -17,7 +17,7 @@ public class IncidentMapper {
                 incident.getTypeIncident(),
                 incident.getStatut(),
                 incident.getDescription(),
-                incident.getTechnicien() != null ? incident.getTechnicien().getIdTechnicien() : null,
+                incident.getTechnicien() != null ? incident.getTechnicien().getId() : null,
                 incident.getResident() != null ? incident.getResident().getId() : null
         );
     }
