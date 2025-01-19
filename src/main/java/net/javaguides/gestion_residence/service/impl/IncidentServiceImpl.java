@@ -75,4 +75,14 @@ public class IncidentServiceImpl implements IncidentService{
                 .map(IncidentMapper::toDto)
                 .collect(Collectors.toList());
     }
+    @Override
+    public IncidentDto updateIncidentStatus(Long id, String newStatus) {
+        Incident incident = incidentRepository.findById(id)
+                .orElseThrow(() -> new RessourceNotFoundException("Incident not found with ID: " + id));
+
+        incident.setStatut(newStatus);
+        Incident updatedIncident = incidentRepository.save(incident);
+
+        return IncidentMapper.toDto(updatedIncident);
+    }
 }

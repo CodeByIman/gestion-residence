@@ -12,4 +12,6 @@ public interface IncidentService {
     List<IncidentDto> getAllIncidents();
 //
     List<IncidentDto> getIncidentsByTechnicienId(Long technicienId);
+
+    IncidentDto updateIncidentStatus(Long id, String newStatus);
 }

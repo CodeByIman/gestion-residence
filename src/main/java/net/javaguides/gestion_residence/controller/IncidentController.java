@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -63,6 +64,14 @@ public class IncidentController {
     public ResponseEntity<List<IncidentDto>> getIncidentsByTechnicienId(@PathVariable Long technicienId) {
         List<IncidentDto> incidents = incidentService.getIncidentsByTechnicienId(technicienId);
         return new ResponseEntity<>(incidents, HttpStatus.OK);
+    }
+
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<IncidentDto> updateIncidentStatus(@PathVariable Long id, @RequestBody Map<String, String> statusUpdate) {
+        String newStatus = statusUpdate.get("statut");
+        IncidentDto updatedIncident = incidentService.updateIncidentStatus(id, newStatus);
+        return ResponseEntity.ok(updatedIncident);
     }
 
 }
