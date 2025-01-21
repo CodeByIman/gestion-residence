@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -117,6 +119,34 @@ public class ChambreServiceImpl implements ChambreService {
         residentRepository.save(resident);  // Sauvegarde du résident
         chambreRepository.save(chambre);    // Sauvegarde de la chambre (si nécessaire)// Save the updated resident
     }
+
+
+    @Override
+    public Map<String, Object> getChambreStatistics() {
+        long totalChambres = chambreRepository.count();
+        long chambresOccupees = chambreRepository.countByStatus(Chambre.Status.OCCUPEE);  // Assurez-vous d'utiliser la bonne énumération
+        long chambresDisponibles = chambreRepository.countByStatus(Chambre.Status.DISPONIBLE);
+        int capaciteTotal = chambreRepository.findAll().stream()
+                .filter(chambre -> chambre.getStatus().equals(Chambre.Status.DISPONIBLE))
+                .mapToInt(chambre -> {
+                    try {
+                        return Integer.parseInt(chambre.getTaille());  // Conversion de String à int
+                    } catch (NumberFormatException e) {
+                        System.err.println("Valeur de taille invalide pour la chambre ID " + chambre.getId() + ": " + chambre.getTaille());
+                        return 0;  // Ignore les tailles non valides
+                    }
+                })
+                .sum();
+
+        Map<String, Object> stats = new HashMap<>();
+        stats.put("tauxOccupation", (double) chambresOccupees / totalChambres * 100);
+        stats.put("chambresDisponibles", chambresDisponibles);
+        stats.put("capaciteHebergement", capaciteTotal);
+
+
+        return stats;
+    }
+
 
 //    @Override
 //    public Chambre libererChambre(Long chambreId) {

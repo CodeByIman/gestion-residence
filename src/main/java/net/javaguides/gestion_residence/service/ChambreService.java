@@ -3,6 +3,7 @@ import net.javaguides.gestion_residence.dto.ChambreDto;
 import net.javaguides.gestion_residence.entity.Chambre;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface ChambreService {
@@ -14,6 +15,8 @@ public interface ChambreService {
     ChambreDto updateChambre(Long id, ChambreDto chambreDto);
     void deleteChambre(Long id);
     void assignResidentToChambre(long chambreId, long residentId);
+
+    Map<String, Object> getChambreStatistics();
 
 //    Chambre libererChambre(Long chambreId);
 }

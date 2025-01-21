@@ -98,4 +98,11 @@ public class ChambreController {
         chambreService.assignResidentToChambre(chambreId, residentId);  // Appel du service avec les IDs
         return ResponseEntity.ok("Resident assigned successfully.");
     }
+
+    @GetMapping("/statistics")
+    public ResponseEntity<Map<String, Object>> getChambreStatistics() {
+        Map<String, Object> stats = chambreService.getChambreStatistics();
+        return ResponseEntity.ok(stats);
+    }
+
 }
