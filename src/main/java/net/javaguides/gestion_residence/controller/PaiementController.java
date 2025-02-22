@@ -1,6 +1,9 @@
 package net.javaguides.gestion_residence.controller;
 
+import jakarta.mail.MessagingException;
 import net.javaguides.gestion_residence.dto.PaiementRequest;
+import net.javaguides.gestion_residence.repository.IncidentRepository;
+import net.javaguides.gestion_residence.repository.PaiementRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 
@@ -29,6 +33,9 @@ public class PaiementController {
 
     @Autowired
     private PaiementService paiementService;
+    @Autowired
+    private PaiementRepository paiementRepository;
+
     @GetMapping
     public ResponseEntity<List<PaiementDto>> getAllPaiements() {
         List<PaiementDto> paiements = paiementService.getAllPaiements();
@@ -45,6 +52,27 @@ public class PaiementController {
     public ResponseEntity<PaiementDto> addPaiement(@RequestBody PaiementDto paiementDto) {
         PaiementDto newPaiement = paiementService.addPaiement(paiementDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newPaiement);
+    }
+    //test email reatard
+    @GetMapping("/send-email")
+    public String sendTestEmail(@RequestParam String email) {
+        paiementService.sendTestEmail(email);
+        return "Test email sent to " + email;
+    }
+
+    // Late payment email trigger
+    @PostMapping("/send-late-payment-emails")
+    public String sendLatePaymentEmails() {
+        paiementService.checkAndNotifyLatePayments();
+        return "Late payment emails have been sent.";
+    }
+
+    //update and get
+    // mettre à jour les paiements en retard et les récupérer
+    @GetMapping("/update-late")
+    public ResponseEntity<List<PaiementDto>> updateAndGetLatePayments() {
+        List<PaiementDto> latePayments = paiementService.checkAndUpdateLatePayments();
+        return ResponseEntity.ok(latePayments);
     }
 
 }
